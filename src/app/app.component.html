@@ -1,20 +1,129 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
-</div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://github.com/angular/angular-cli/wiki">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
+<div class="container">
+  <div class="py-5 text-center">
+    <img class="d-block mx-auto mb-4" src="https://www.ethereum.org/images/logos/ETHEREUM-ICON_Black_small.png" alt="" width="200" height="200">
+    <h2>Ethereum Account Management</h2>
+    <p class="lead">You can create new account, get account balance and transfer fund.</p>
+  </div>
 
+  <div class="row">
+    <div class="col-md-12 order-md-1">
+      <h4 class="mb-3">Check Account Balance</h4>
+      <form class="needs-validation" novalidate (ngSubmit)="addAccount()" #balanceForm="ngForm">
+        <div class="row">
+          <div class="col-md-12 mb-3">
+            <label for="paddr">Public Address</label>
+            <input type="text" class="form-control" id="paddr" name="paddr" #paddr="ngModel" placeholder="Public Address" [(ngModel)]="publicAddress" required minlength="40">
+            <div class="invalid-feedback" *ngIf="paddr.invalid && (paddr.dirty || paddr.touched)">
+              Valid public address (min 40 chars) is required.
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-2 mb-3">
+            <button class="btn btn-primary btn-lg btn-block" type="submit" [disabled]="!balanceForm.form.valid">Submit</button>
+          </div>
+        </div>
+        <ether-account (onClosed)="etherAccCloseClicked($event)" *ngFor="let acc of balances" [publicAddress]="acc.publicAddress" [balance]="acc.balance"></ether-account>
+      </form>
+      <hr class="mb-4">
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12 order-md-1">
+      <h4 class="mb-3">Create Account</h4>
+      <form class="needs-validation" novalidate (ngSubmit)="createAccount()" #createAccountForm="ngForm">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="paddr">Password</label>
+            <input type="password" class="form-control" id="paddr1" name="paddr" placeholder="Password" #password1="ngModel" [(ngModel)]="newPassword" required minlength="6">
+            <div class="invalid-feedback" *ngIf="password1.invalid && (password1.dirty || password1.touched)">
+              Password required.
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="paddr">Confirm Password</label>
+            <input type="password" class="form-control" id="paddr2" name="paddr" placeholder="Repeat Password" #password2="ngModel" [(ngModel)]="repeatNewPassword" required minlength="6">
+            <div class="invalid-feedback" *ngIf="password2.invalid && (password2.dirty || password2.touched)">
+              Repeat Password is required.
+            </div>
+            <div class="invalid-feedback" *ngIf="password1.value. !== password2.value">
+              Passwords don't match.
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-2 mb-3">
+            <button class="btn btn-primary btn-lg btn-block" type="submit" [disabled]="!createAccountForm.form.valid">Submit</button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 mb-3">
+              <label>Public Address </label>
+              {{newAccountAddress | async}}
+          </div>
+        </div>
+      </form>
+      <hr class="mb-4">
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12 order-md-1">
+      <h4 class="mb-3">Transfer Fund</h4>
+      <form class="needs-validation" novalidate>
+        <div class="row">
+          <div class="col-md-12 mb-3">
+            <label for="paddr">From Account</label>
+            <input type="text" class="form-control" id="paddr3" name="paddr" placeholder="" [(ngModel)]="fromAddr" required>
+            <div class="invalid-feedback">
+              From account required.
+            </div>
+          </div>
+          <div class="col-md-12 mb-3">
+            <label for="paddr">To Account</label>
+            <input type="text" class="form-control" id="paddr4" name="paddr" placeholder="" [(ngModel)]="toAddr" required>
+            <div class="invalid-feedback">
+              To account is required.
+            </div>
+          </div>
+          <div class="col-md-12 mb-3">
+            <label for="paddr">Amount</label>
+            <input type="number" class="form-control" id="paddr5" name="paddr" placeholder="" [(ngModel)]="amount" required>
+            <div class="invalid-feedback">
+              Amount is required.
+            </div>
+          </div>
+          <div class="col-md-12 mb-3">
+            <label for="paddr">Password</label>
+            <input type="password" class="form-control" id="paddr6" name="paddr" placeholder="" [(ngModel)]="password" required>
+            <div class="invalid-feedback">
+              Password is required.
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-2 mb-3">
+            <button class="btn btn-primary btn-lg btn-block" type="button" (click)="transferEther()">Submit</button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 mb-3">
+              <label>Receipt </label>
+              {{receipt | async | json}}
+          </div>
+        </div>
+      </form>
+      <hr class="mb-4">
+    </div>
+  </div>
+
+  <footer class="my-5 pt-5 text-muted text-center text-small">
+    <p class="mb-1">&copy; 2017-2018 Yang Zhang</p>
+    <ul class="list-inline">
+      <li class="list-inline-item"><a href="#">Privacy</a></li>
+      <li class="list-inline-item"><a href="#">Terms</a></li>
+      <li class="list-inline-item"><a href="#">Support</a></li>
+    </ul>
+  </footer>
+</div>

@@ -1,0 +1,17 @@
+<div class="row">
+    <div class="col-md-12 mb-3">
+        <div class="alert alert-primary alert-dismissible fade show" role="alert">
+            <div class="row">
+            <div class="col-md-6 col-sm-12">
+                <strong>{{publicAddress}}</strong>
+            </div>
+            <div class="col-md-6">
+                {{balance}}
+            </div>
+            </div>
+            <button (click)="closeClicked()" type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    </div>
+</div>
