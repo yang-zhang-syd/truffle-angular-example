@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
+import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import * as _ from 'lodash';
 import * as fromRoot from 'app/datastore/root-reducers';
 import * as AccountActions from 'app/datastore/account/account-actions';
@@ -22,21 +23,36 @@ export class AppComponent {
   interval: any;
 
   // create new account
-  newPassword: string = '';
-  repeatNewPassword: string = '';
   newAccountAddress: Observable<string>;
+  newAccountForm: FormGroup;
 
   // transfer fund
-  fromAddr: string;
-  toAddr: string;
-  password: string;
-  amount: string;
   receipt: Observable<any>;
+  transferFundForm: FormGroup;
 
-  constructor(private store: Store<fromRoot.State>) {
+  constructor(private store: Store<fromRoot.State>, private fb: FormBuilder) {
     this.balancesObservable = store.select(state => state.account.balances);
     this.newAccountAddress = store.select(state => state.account.newAccountAddress);
     this.receipt = store.select(state => state.account.transferReceipt);
+
+    this.newAccountForm = this.fb.group({
+        newPassword: ['', [Validators.required, Validators.minLength(6)]],
+        repeatNewPassword: ['', [Validators.required, Validators.minLength(6)]],
+      }, 
+      {validator: this.passwordMatchValidator}
+    );
+
+    this.transferFundForm = this.fb.group({
+      fromAddr: ['', [Validators.required, Validators.minLength(40)]],
+      toAddr: ['', [Validators.required, Validators.minLength(40)]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      amount: ['', [Validators.required]]
+    });
+  }
+
+  passwordMatchValidator(frm: FormGroup) {
+    return frm.controls['newPassword'].value === frm.controls['repeatNewPassword'].value
+       ? null : {'mismatch': true};
   }
 
   ngOnInit() {
@@ -76,17 +92,20 @@ export class AppComponent {
   }
 
   createAccount() {
-    if(this.newPassword === this.repeatNewPassword) {
-      this.store.dispatch(new AccountActions.CreateAccount(this.newPassword));
+    if(!this.newAccountForm.errors) {
+      this.store.dispatch(new AccountActions.CreateAccount(this.newAccountForm.value.newPassword));
     }
   }
 
   transferEther() {
+    if(this.transferFundForm.errors)
+      return;
+
     this.store.dispatch(new AccountActions.TransferEther({
-      fromAddr: this.fromAddr,
-      toAddr: this.toAddr,
-      amount: this.amount,
-      password: this.password
+      fromAddr: this.transferFundForm.value.fromAddr,
+      toAddr: this.transferFundForm.value.toAddr,
+      amount: this.transferFundForm.value.amount,
+      password: this.transferFundForm.value.password
     }));
   }
 }

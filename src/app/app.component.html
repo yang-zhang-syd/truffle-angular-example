@@ -32,29 +32,29 @@
   <div class="row">
     <div class="col-md-12 order-md-1">
       <h4 class="mb-3">Create Account</h4>
-      <form class="needs-validation" novalidate (ngSubmit)="createAccount()" #createAccountForm="ngForm">
+      <form class="needs-validation" novalidate (ngSubmit)="createAccount()" [formGroup]="newAccountForm">
         <div class="row">
           <div class="col-md-6 mb-3">
             <label for="paddr">Password</label>
-            <input type="password" class="form-control" id="paddr1" name="paddr" placeholder="Password" #password1="ngModel" [(ngModel)]="newPassword" required minlength="6">
-            <div class="invalid-feedback" *ngIf="password1.invalid && (password1.dirty || password1.touched)">
-              Password required.
+            <input type="password" class="form-control" id="newPassword" name="newPassword" placeholder="Password" formControlName="newPassword" required minlength="6">
+            <div class="invalid-feedback" *ngIf="newAccountForm.controls['newPassword'].invalid && (newAccountForm.controls['newPassword'].dirty || newAccountForm.controls['newPassword'].touched)">
+              Password is required and at least 6 characters.
             </div>
           </div>
           <div class="col-md-6 mb-3">
             <label for="paddr">Confirm Password</label>
-            <input type="password" class="form-control" id="paddr2" name="paddr" placeholder="Repeat Password" #password2="ngModel" [(ngModel)]="repeatNewPassword" required minlength="6">
-            <div class="invalid-feedback" *ngIf="password2.invalid && (password2.dirty || password2.touched)">
-              Repeat Password is required.
+            <input type="password" class="form-control" id="paddr2" name="paddr" placeholder="Repeat Password" formControlName="repeatNewPassword" required minlength="6">
+            <div class="invalid-feedback" *ngIf="newAccountForm.controls['repeatNewPassword'].invalid && (newAccountForm.controls['repeatNewPassword'].dirty || newAccountForm.controls['repeatNewPassword'].touched)">
+              Repeat Password is required and at least 6 characters.
             </div>
-            <div class="invalid-feedback" *ngIf="password1.value. !== password2.value">
+            <div class="invalid-feedback" *ngIf="newAccountForm.errors?.mismatch && (newAccountForm.controls['repeatNewPassword'].dirty || newAccountForm.controls['repeatNewPassword'].touched)">
               Passwords don't match.
             </div>
           </div>
         </div>
         <div class="row">
           <div class="col-md-2 mb-3">
-            <button class="btn btn-primary btn-lg btn-block" type="submit" [disabled]="!createAccountForm.form.valid">Submit</button>
+            <button class="btn btn-primary btn-lg btn-block" type="submit" [disabled]="!newAccountForm.valid">Submit</button>
           </div>
         </div>
         <div class="row">
@@ -71,40 +71,40 @@
   <div class="row">
     <div class="col-md-12 order-md-1">
       <h4 class="mb-3">Transfer Fund</h4>
-      <form class="needs-validation" novalidate>
+      <form class="needs-validation" novalidate (ngSubmit)="transferEther()" [formGroup]="transferFundForm">
         <div class="row">
           <div class="col-md-12 mb-3">
             <label for="paddr">From Account</label>
-            <input type="text" class="form-control" id="paddr3" name="paddr" placeholder="" [(ngModel)]="fromAddr" required>
-            <div class="invalid-feedback">
-              From account required.
+            <input type="text" class="form-control" id="paddr3" name="paddr" placeholder="" formControlName="fromAddr" required>
+            <div class="invalid-feedback" *ngIf="transferFundForm.controls['fromAddr'].invalid && (transferFundForm.controls['fromAddr'].dirty || transferFundForm.controls['fromAddr'].touched)">
+              From account required and at least 40 characters.
             </div>
           </div>
           <div class="col-md-12 mb-3">
             <label for="paddr">To Account</label>
-            <input type="text" class="form-control" id="paddr4" name="paddr" placeholder="" [(ngModel)]="toAddr" required>
-            <div class="invalid-feedback">
-              To account is required.
+            <input type="text" class="form-control" id="paddr4" name="paddr" placeholder="" formControlName="toAddr" required>
+            <div class="invalid-feedback" *ngIf="transferFundForm.controls['toAddr'].invalid && (transferFundForm.controls['toAddr'].dirty || transferFundForm.controls['toAddr'].touched)">
+              To account is required and at least 40 characters.
             </div>
           </div>
           <div class="col-md-12 mb-3">
             <label for="paddr">Amount</label>
-            <input type="number" class="form-control" id="paddr5" name="paddr" placeholder="" [(ngModel)]="amount" required>
-            <div class="invalid-feedback">
+            <input type="number" class="form-control" id="paddr5" name="paddr" placeholder="" formControlName="amount" required>
+            <div class="invalid-feedback" *ngIf="transferFundForm.controls['amount'].invalid && (transferFundForm.controls['amount'].dirty || transferFundForm.controls['amount'].touched)">
               Amount is required.
             </div>
           </div>
           <div class="col-md-12 mb-3">
             <label for="paddr">Password</label>
-            <input type="password" class="form-control" id="paddr6" name="paddr" placeholder="" [(ngModel)]="password" required>
-            <div class="invalid-feedback">
-              Password is required.
+            <input type="password" class="form-control" id="paddr6" name="paddr" placeholder="" formControlName="password" required>
+            <div class="invalid-feedback" *ngIf="transferFundForm.controls['password'].invalid && (transferFundForm.controls['password'].dirty || transferFundForm.controls['password'].touched)">
+              Password is required and at least 6 characters.
             </div>
           </div>
         </div>
         <div class="row">
           <div class="col-md-2 mb-3">
-            <button class="btn btn-primary btn-lg btn-block" type="button" (click)="transferEther()">Submit</button>
+            <button class="btn btn-primary btn-lg btn-block" type="submit" [disabled]="!transferFundForm.valid">Submit</button>
           </div>
         </div>
         <div class="row">
