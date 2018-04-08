@@ -5,5 +5,6 @@
 
 export const environment = {
   production: false,
-  ethereumApiUrl: 'http://localhost:3697/api/Ethereum'
+  ethereumApiUrl: 'http://localhost:3697/api/Ethereum',
+  ethereumNodeUrl: 'http://127.0.0.1:7545'
 };
