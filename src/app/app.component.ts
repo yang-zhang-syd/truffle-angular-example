@@ -8,7 +8,7 @@ import * as _ from 'lodash';
 import * as fromRoot from 'app/datastore/root-reducers';
 import * as AccountActions from 'app/datastore/account/account-actions';
 
-const artifacts = require('../../contract/build/contracts/MetaCoin.json');
+const artifacts = require('../../build/contracts/MetaCoin.json');
 const contract = require('truffle-contract');
 const Web3 = require('web3');
 
