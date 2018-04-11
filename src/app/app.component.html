@@ -11,7 +11,6 @@
       <form class="needs-validation" novalidate (ngSubmit)="checkBalance()" #balanceForm="ngForm">
         <div class="row">
           <div class="col-md-12 mb-3">
-            <label for="paddr">Account Public Address</label>
             <input type="text" class="form-control" id="paddr" name="paddr" #paddr="ngModel" placeholder="Account Public Address" [(ngModel)]="accountAddr" required minlength="40">
             <div class="invalid-feedback" *ngIf="paddr.invalid && (paddr.dirty || paddr.touched)">
               Valid public address (min 40 chars) is required.

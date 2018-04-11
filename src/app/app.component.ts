@@ -1,12 +1,9 @@
 import { Component } from '@angular/core';
-import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { environment } from 'environments/environment';
 import * as _ from 'lodash';
-import * as fromRoot from 'app/datastore/root-reducers';
-import * as AccountActions from 'app/datastore/account/account-actions';
 
 const artifacts = require('../../build/contracts/MetaCoin.json');
 const contract = require('truffle-contract');
@@ -34,7 +31,7 @@ export class AppComponent {
 
   MetaCoin = contract(artifacts);
 
-  constructor(private store: Store<fromRoot.State>, private fb: FormBuilder) {
+  constructor(private fb: FormBuilder) {
 
     this.transferFundForm = this.fb.group({
       fromAddr: ['', [Validators.required, Validators.minLength(40)]],

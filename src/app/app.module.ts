@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { EtherAccountComponent } from './components/ether.account.component';
-import { DataStoreModule } from 'app/datastore/datastore.module';
 import { HttpModule } from '@angular/http';
 
 @NgModule({
@@ -15,8 +14,7 @@ import { HttpModule } from '@angular/http';
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpModule,
-    DataStoreModule
+    HttpModule
   ],
   providers: [],
   bootstrap: [AppComponent]
